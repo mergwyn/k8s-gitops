@@ -15,6 +15,16 @@ home-assistant:
           "ips": ["10.58.0.241"]
         }]
 
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+            - foxtrot
+
   ingress:
     main:
       enabled: true
@@ -45,5 +55,8 @@ home-assistant:
   persistence:
     config:
       enabled: true
-      existingClaim: "home-assistant-volume"
-      retain: true
+      type: hostPath
+      mountPath: /config
+      hostPath: /opt/appdata/home-assistant
+#      existingClaim: "home-assistant-volume"
+#      retain: true
